@@ -4,4 +4,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- Notification widget -->
+    <dimen name="notification_icon_size">24dp</dimen>
+    <dimen name="notification_subtext_size">@*android:dimen/notification_subtext_size</dimen>
+
 </resources>
