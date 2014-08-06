@@ -50,19 +50,20 @@ public final class Extractor {
 
     @SuppressLint("NewApi")
     private Bundle getExtras(Notification notification) {
-        if (Device.hasKitKatApi()) {
-            return notification.extras;
-        }
-
-        // Access extras using reflections.
-        try {
-            Field field = Notification.class.getDeclaredField("extras");
-            field.setAccessible(true);
-            return (Bundle) field.get(notification);
-        } catch (Exception e) {
-            Log.w(TAG, "Failed to access extras on Jelly Bean.");
-            return null;
-        }
+//        if (Device.hasKitKatApi()) {
+//            return notification.extras;
+//        }
+//
+//        // Access extras using reflections.
+//        try {
+//            Field field = Notification.class.getDeclaredField("extras");
+//            field.setAccessible(true);
+//            return (Bundle) field.get(notification);
+//        } catch (Exception e) {
+//            Log.w(TAG, "Failed to access extras on Jelly Bean.");
+//            return null;
+//        }
+    	return null;
     }
 
     public NotificationData loadTexts(Context context,

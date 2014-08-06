@@ -55,6 +55,7 @@ public class NotificationData {
 
     public Action[] actions;
 
+    public int iconRes;
     private Bitmap icon;
     private Bitmap circleIcon;
     private Bitmap background;

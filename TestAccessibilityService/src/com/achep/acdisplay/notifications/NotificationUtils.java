@@ -16,9 +16,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA  02110-1301, USA.
  */
+
 package com.achep.acdisplay.notifications;
 
-import android.app.Notification;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -35,18 +35,29 @@ public class NotificationUtils {
 
     private static final String TAG = "NotificationUtils";
 
-    public static Drawable getDrawable(Context context, StatusBarNotification n, int iconRes) {
-        Context pkgContext = createContext(context, n);
+//    public static Drawable getDrawable(Context context, StatusBarNotification n, int iconRes) {
+//        Context pkgContext = createContext(context, n);
+//        if (pkgContext != null)
+//            try {
+//                return pkgContext.getResources().getDrawable(iconRes);
+//            } catch (Resources.NotFoundException nfe) { /* unused */
+//            }
+//        return null;
+//    }
+
+    public static Drawable getDrawable(Context context, String packageName, int iconRes) {
+        Context pkgContext = createContext(context, packageName);
         if (pkgContext != null)
             try {
                 return pkgContext.getResources().getDrawable(iconRes);
-            } catch (Resources.NotFoundException nfe) { /* unused */ }
+            } catch (Resources.NotFoundException nfe) { /* unused */
+            }
         return null;
     }
 
-    public static Context createContext(Context context, StatusBarNotification n) {
-        return createContext(context, n.getPackageName());
-    }
+//    public static Context createContext(Context context, StatusBarNotification n) {
+//        return createContext(context, n.getPackageName());
+//    }
 
     public static Context createContext(Context context, String packageName) {
         try {
@@ -57,17 +68,18 @@ public class NotificationUtils {
         }
     }
 
-    //    public static boolean equals(StatusBarNotification n, StatusBarNotification n2) {
-//        return n == n2 || n != null && n2 != null && new EqualsBuilder()
-//                .append(n.getId(), n2.getId())
-//                .append(n.getPackageName(), n2.getPackageName())
-//                .append(n.getTag(), n2.getTag())
-//                .isEquals();
-//    }
-//
-//    public static boolean equals(OpenNotification n, OpenNotification n2) {
-//        return n == n2 || n != null && n2 != null && equals(
-//                n.getStatusBarNotification(),
-//                n2.getStatusBarNotification());
-//    }
+    // public static boolean equals(StatusBarNotification n,
+    // StatusBarNotification n2) {
+    // return n == n2 || n != null && n2 != null && new EqualsBuilder()
+    // .append(n.getId(), n2.getId())
+    // .append(n.getPackageName(), n2.getPackageName())
+    // .append(n.getTag(), n2.getTag())
+    // .isEquals();
+    // }
+    //
+    // public static boolean equals(OpenNotification n, OpenNotification n2) {
+    // return n == n2 || n != null && n2 != null && equals(
+    // n.getStatusBarNotification(),
+    // n2.getStatusBarNotification());
+    // }
 }
