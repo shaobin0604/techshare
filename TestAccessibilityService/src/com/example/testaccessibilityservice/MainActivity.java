@@ -78,18 +78,13 @@ public class MainActivity extends Activity {
             super.onActivityCreated(savedInstanceState);
             mAdapter = new NotificationAdapter(getActivity(), R.layout.item_notification);
             mListView.setAdapter(mAdapter);
-        }
-        
-        @Override
-        public void onPause() {
-            super.onPause();
-            EventBus.getDefault().unregister(this);
-        }
-        
-        @Override
-        public void onResume() {
-            super.onResume();
             EventBus.getDefault().register(this);
+        }
+        
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            EventBus.getDefault().unregister(this);
         }
         
         public void onEvent(NotificationDataEvent event) {
