@@ -33,27 +33,27 @@ public class NotiService extends AccessibilityService {
         CharSequence packageName = event.getPackageName();
         long eventTime = event.getEventTime();
         List<CharSequence> text = event.getText();
-        Parcelable parcelableData = event.getParcelableData();
-        if (parcelableData instanceof Notification) {
-            Notification notification = (Notification) parcelableData;
-            Log.d(TAG, "onAccessibilityEvent, eventType: " + eventType + ", packageName: "
-                    + packageName + ", className: " + className + ", text: " + text
-                    + ", eventTime: " + eventTime + ", notification: " + notification);
-            NotificationData data = new NotificationData();
-            mExtractor.loadTexts(this, packageName.toString(), notification, data);
-            data.iconRes = notification.icon;
-            data.packageName = packageName;
-            data.when = notification.when;
-            data.pendingIntent = notification.contentIntent;
-            Log.d(TAG, "onAccessibilityEvent, data: " + data);
-            // try {
-            // data.pendingIntent.send();
-            // } catch (CanceledException e) {
-            // // TODO Auto-generated catch block
-            // e.printStackTrace();
-            // }
-            EventBus.getDefault().post(new NotificationDataEvent(data));
-        }
+
+        Notification notification = (Notification) event.getParcelableData();
+        Log.d(TAG, "onAccessibilityEvent, eventType: " + eventType + ", packageName: " + packageName +
+                ", className: " + className + ", text: " + text +
+                ", eventTime: " + eventTime + ", notification: " + notification);
+        NotificationData data = new NotificationData();
+        data.notification = notification;
+        mExtractor.loadTexts(this, packageName.toString(), notification, data);
+        data.largeIcon = notification.largeIcon;
+        data.iconRes = notification.icon;
+        data.packageName = packageName;
+        data.when = notification.when;
+        data.pendingIntent = notification.contentIntent;
+        Log.d(TAG, "onAccessibilityEvent, data: " + data);
+//        try {
+//            data.pendingIntent.send();
+//        } catch (CanceledException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+        EventBus.getDefault().post(new NotificationDataEvent(data));
     }
 
     @Override

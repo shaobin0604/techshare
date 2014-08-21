@@ -24,6 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name="com.example.testaccessibilityservice.RemoteViewsActivity">
+        </activity>
 
         <service android:name=".NotiService" android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>

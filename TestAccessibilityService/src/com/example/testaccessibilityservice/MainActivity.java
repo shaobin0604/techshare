@@ -3,24 +3,28 @@ package com.example.testaccessibilityservice;
 
 import java.util.List;
 
-import com.achep.acdisplay.notifications.NotificationData;
-import com.achep.acdisplay.notifications.NotificationUtils;
-
-import de.greenrobot.event.EventBus;
-
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.PendingIntent.CanceledException;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.achep.acdisplay.notifications.NotificationData;
+import com.achep.acdisplay.notifications.NotificationUtils;
+
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends Activity {
 
@@ -50,6 +54,8 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, RemoteViewsActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -58,8 +64,9 @@ public class MainActivity extends Activity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment implements OnItemClickListener {
         private ListView mListView;
+
         private NotificationAdapter mAdapter;
 
         public PlaceholderFragment() {
@@ -70,6 +77,7 @@ public class MainActivity extends Activity {
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             mListView = (ListView) rootView.findViewById(R.id.notification_list);
+            mListView.setOnItemClickListener(this);
             return rootView;
         }
 
@@ -80,15 +88,32 @@ public class MainActivity extends Activity {
             mListView.setAdapter(mAdapter);
             EventBus.getDefault().register(this);
         }
-        
+
         @Override
         public void onDestroy() {
             super.onDestroy();
             EventBus.getDefault().unregister(this);
         }
-        
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            EventBus.getDefault().register(this);
+        }
+
         public void onEvent(NotificationDataEvent event) {
             mAdapter.add(event.data);
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            NotificationData item = mAdapter.getItem(position);
+            try {
+                item.pendingIntent.send();
+            } catch (CanceledException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
 
         private static class NotificationAdapter extends ArrayAdapter<NotificationData> {
@@ -136,8 +161,12 @@ public class MainActivity extends Activity {
                 TextView message = (TextView) convertView.findViewById(R.id.message);
 
                 NotificationData data = getItem(position);
-                icon.setImageDrawable(NotificationUtils.getDrawable(getContext(),
-                        data.packageName.toString(), data.iconRes));
+                if (data.largeIcon != null) {
+                    icon.setImageBitmap(data.largeIcon);
+                } else {
+                    icon.setImageDrawable(NotificationUtils.getDrawable(getContext(),
+                            data.packageName.toString(), data.iconRes));
+                }
                 title.setText(data.titleText);
                 message.setText(data.messageText);
                 return convertView;

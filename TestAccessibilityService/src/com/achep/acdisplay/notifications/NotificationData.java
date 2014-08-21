@@ -56,9 +56,12 @@ public class NotificationData {
     public Action[] actions;
 
     public int iconRes;
+    public Bitmap largeIcon;
     private Bitmap icon;
     private Bitmap circleIcon;
     private Bitmap background;
+    
+    public Notification notification;
 
     /**
      * The number of events that this notification represents. For example, in a new mail
