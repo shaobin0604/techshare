@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, RemoteViewsActivity.class);
+            Intent intent = new Intent(this, NotificationListenerActivity.class);
             startActivity(intent);
             return true;
         }
@@ -93,12 +93,6 @@ public class MainActivity extends Activity {
         public void onDestroy() {
             super.onDestroy();
             EventBus.getDefault().unregister(this);
-        }
-
-        @Override
-        public void onResume() {
-            super.onResume();
-            EventBus.getDefault().register(this);
         }
 
         public void onEvent(NotificationDataEvent event) {
